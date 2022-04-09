@@ -7,8 +7,8 @@
 // @match        https://mlb66.ir
 // @match        https://mlb66.ir/simulator
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mlb66.ir
-// @updateURL    https://raw.githubusercontent.com/billiumgates/tampermonkeys/main/mlb66
-// @downloadURL  https://raw.githubusercontent.com/billiumgates/tampermonkeys/main/mlb66
+// @updateURL    https://raw.githubusercontent.com/billiumgates/tampermonkeys/main/mlb66.js
+// @downloadURL  https://raw.githubusercontent.com/billiumgates/tampermonkeys/main/mlb66.js
 // @homepageURL  https://github.com/billiumgates/tampermonkeys/
 // @grant        none
 // ==/UserScript==
