@@ -14,6 +14,7 @@
 // ==/UserScript==
 
 (function() {
+
     'use strict';
     var retryTimeout = 500;
     var retryCount = 0;
@@ -80,5 +81,4 @@
             }, retryTimeout)
         }
     }
-    // Your code here...
 })();
