@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MLB66Fix
 // @namespace    https://mlb66.ir
-// @version      0.3
+// @version      0.4
 // @description  Remove stupid shit
 // @author       billiumgates
 // @match        https://mlb66.ir
@@ -19,9 +19,13 @@
     var retryTimeout = 500;
     var retryCount = 0;
     var maxRetries = 40;
-    var removableClasses = [".turbo", ".chat-wrapper", ".top-nav", ".prediction-wrapper", ".router-links", ".router-wrapper"];
+    var removableClasses = [".turbo", ".cast", ".download-button", ".chat-wrapper", ".top-nav", ".prediction-wrapper", ".router-links", ".router-wrapper"];
     var removableMap = new Map();
     var popupClosed = false;
+    var paddingRemoved = false;
+    var headerHidden = false;
+    var gameSelectorMoved = false;
+
     for(const c of removableClasses) {
         removableMap.set(c, c);
     }
@@ -53,6 +57,60 @@
             }
         }
 
+        if(paddingRemoved === false) {
+            try {
+                document.querySelector(".show_live_scores").style.padding = 0;
+                paddingRemoved = true;
+            }
+            catch(error) {
+                retry = true;
+                if(retryCount > maxRetries) {
+                    console.error("Could not find the .show_live_scores to remove the padding: " + error);
+                    retry = false;
+                }
+                else {
+                    console.debug("Could not remove padding, will retry in " + retryTimeout + "ms");
+                }
+            }
+        }
+
+        if(headerHidden === false) {
+            try {
+                document.querySelector(".stream-wrapper").querySelector("header").style.height = 0;
+                headerHidden = true;
+            }
+            catch(error) {
+                retry = true;
+                if(retryCount > maxRetries) {
+                    console.error("Could not find the .stream-wrapper header to hide it: " + error);
+                    retry = false;
+                }
+                else {
+                    console.debug("Could not hide the header, will retry in " + retryTimeout + "ms");
+                }
+            }
+        }
+
+        if(gameSelectorMoved === false) {
+            try {
+                var gameSelector = document.querySelector(".stream-wrapper").querySelector("header").querySelector(".selector");
+                gameSelector.style.position = "absolute";
+                gameSelector.style.top = "96%"
+                gameSelector.style.left = "50%"
+                gameSelectorMoved = true;
+            }
+            catch(error) {
+                retry = true;
+                if(retryCount > maxRetries) {
+                    console.error("Could not find the .selector to move it: " + error);
+                    retry = false;
+                }
+                else {
+                    console.debug("Could move the game selector, will retry in " + retryTimeout + "ms");
+                }
+            }
+        }
+
         for(const [key, value] of removableMap.entries()) {
             try {
                 if(key === ".router-wrapper") {
@@ -73,6 +131,7 @@
                 }
             }
         }
+        
         if(retry === true) {
             retryCount++;
             setTimeout(() => {
