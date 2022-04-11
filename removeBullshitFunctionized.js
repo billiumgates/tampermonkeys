@@ -1,10 +1,10 @@
 "use strict";
 
 class PageAction {
-   constructor(name, actionToExecute) {
-      this.name = name;
-      this.isComplete = false;
-      this.actionToExecute = actionToExecute;
+   constructor(actionName, functionToExecute) {
+      this.name = actionName;
+      this.complete = false;
+      this.actionToExecute = functionToExecute;
    }
 
    getName() {
@@ -14,10 +14,10 @@ class PageAction {
       this.name = newName;
    }
    isComplete() {
-      return this.isComplete;
+      return this.complete;
    }
-   setIsComplete(complete) {
-      this.isComplete = complete;
+   setIsComplete(completed) {
+      this.complete = completed;
    }
 }
 
@@ -73,9 +73,10 @@ function actionWrapper() {
 function removeBullshit() {
    var retry = false;
 
-   for (let action in actions) {
+   for (let action of actions) {
       if (action.isComplete() === false) {
          try {
+            action.actionToExecute;
             action.setIsComplete(true);
          } catch (error) {
             retry = true;
