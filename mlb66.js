@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MLB66Fix
 // @namespace    https://mlb66.ir
-// @version      0.4.6
+// @version      0.4.7
 // @description  Remove stupid shit
 // @author       billiumgates
 // @match        https://mlb66.ir
@@ -11,6 +11,7 @@
 // @downloadURL  https://raw.githubusercontent.com/billiumgates/tampermonkeys/main/mlb66.js
 // @homepageURL  https://github.com/billiumgates/tampermonkeys/
 // @require      https://raw.githubusercontent.com/billiumgates/tampermonkeys/main/removeBullshitFunctionized.js
+// @run-at document-idle
 // @grant        none
 // ==/UserScript==
 

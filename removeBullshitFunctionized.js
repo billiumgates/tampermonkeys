@@ -19,7 +19,28 @@ class PageAction {
    setIsComplete(completed) {
       this.complete = completed;
    }
+
+   doAction() {
+      this.actionToExecute();
+   }
 }
+
+let popupFunction = function actionOverlayWrapper() {
+   console.debug("Closing the popup");
+   document.querySelector(".overlay-wrapper").querySelector("button").click();
+};
+
+let scoresFunction = function actionScores() {
+   document.querySelector(".show_live_scores").style.padding = 0;
+};
+
+let headerFunction = function actionWrapper() {
+   document.querySelector(".stream-wrapper").querySelector("header").style.height = 0;
+   var gameSelector = document.querySelector(".stream-wrapper").querySelector("header").querySelector(".selector");
+   gameSelector.style.position = "absolute";
+   gameSelector.style.top = "96%";
+   gameSelector.style.left = "50%";
+};
 
 var retryTimeout = 500;
 var retryCount = 0;
@@ -39,10 +60,10 @@ for (const c of removableClasses) {
    removableMap.set(c, c);
 }
 
-var overlayAction = new PageAction(".overlay-wrapper", actionOverlayWrapper);
-var scoresAction = new PageAction(".show_live_scores", actionScores);
-var wrapperAction = new PageAction(".stream-wrapper", actionScores);
-var actions = [overlayAction, scoresAction, wrapperAction];
+let overlayAction = new PageAction(".overlay-wrapper", popupFunction);
+let scoresAction = new PageAction(".show_live_scores", scoresFunction);
+let wrapperAction = new PageAction(".stream-wrapper", headerFunction);
+let actions = [overlayAction, scoresAction, wrapperAction];
 // var popupClosed = false;
 // var paddingRemoved = false;
 // var headerHidden = false;
@@ -54,107 +75,27 @@ document.onload = setTimeout(() => {
    console.debug("Bullshit removed");
 }, retryTimeout);
 
-function actionOverlayWrapper() {
-   document.querySelector(".overlay-wrapper").querySelector("button").click();
-}
-
-function actionScores() {
-   document.querySelector(".show_live_scores").style.padding = 0;
-}
-
-function actionWrapper() {
-   document.querySelector(".stream-wrapper").querySelector("header").style.height = 0;
-   var gameSelector = document.querySelector(".stream-wrapper").querySelector("header").querySelector(".selector");
-   gameSelector.style.position = "absolute";
-   gameSelector.style.top = "96%";
-   gameSelector.style.left = "50%";
-}
-
 function removeBullshit() {
    var retry = false;
 
    for (let action of actions) {
       if (action.isComplete() === false) {
          try {
-            action.actionToExecute;
+            action.doAction();
             action.setIsComplete(true);
          } catch (error) {
             retry = true;
             if (retryCount > maxRetries) {
-               console.error("Could perform the " + action.getName() + ":" + error);
+               console.error("Could not perform the action " + action.getName() + ":" + error);
                retry = false;
             } else {
-               console.debug("Could perform the " + action.getName() + ", will retry in " + retryTimeout + "ms");
+               console.debug(
+                  "Could not perform the action " + action.getName() + ", will retry in " + retryTimeout + "ms",
+               );
             }
          }
       }
    }
-
-   // if (popupClosed === false) {
-   //    try {
-   //       document.querySelector(".overlay-wrapper").querySelector("button").click();
-   //       popupClosed = true;
-   //    } catch (error) {
-   //       retry = true;
-   //       if (retryCount > maxRetries) {
-   //          console.error("Could not remove find the .overlay-wrapper to close the popup: " + error);
-   //          retry = false;
-   //       } else {
-   //          console.debug("Could not click the popup button, will retry in " + retryTimeout + "ms");
-   //       }
-   //    }
-   // }
-
-   // if (paddingRemoved === false) {
-   //    try {
-   //       document.querySelector(".show_live_scores").style.padding = 0;
-   //       paddingRemoved = true;
-   //    } catch (error) {
-   //       retry = true;
-   //       if (retryCount > maxRetries) {
-   //          console.error("Could not find the .show_live_scores to remove the padding: " + error);
-   //          retry = false;
-   //       } else {
-   //          console.debug("Could not remove padding, will retry in " + retryTimeout + "ms");
-   //       }
-   //    }
-   // }
-
-   // if (headerHidden === false) {
-   //    try {
-   //       document.querySelector(".stream-wrapper").querySelector("header").style.height = 0;
-   //       headerHidden = true;
-   //    } catch (error) {
-   //       retry = true;
-   //       if (retryCount > maxRetries) {
-   //          console.error("Could not find the .stream-wrapper header to hide it: " + error);
-   //          retry = false;
-   //       } else {
-   //          console.debug("Could not hide the header, will retry in " + retryTimeout + "ms");
-   //       }
-   //    }
-   // }
-
-   // if (gameSelectorMoved === false) {
-   //    try {
-   //       var gameSelector = document
-   //          .querySelector(".stream-wrapper")
-   //          .querySelector("header")
-   //          .querySelector(".selector");
-   //       gameSelector.style.position = "absolute";
-   //       gameSelector.style.top = "96%";
-   //       gameSelector.style.left = "50%";
-   //       gameSelectorMoved = true;
-   //    } catch (error) {
-   //       retry = true;
-   //       if (retryCount > maxRetries) {
-   //          console.error("Could not find the .selector to move it: " + error);
-   //          retry = false;
-   //       } else {
-   //          console.debug("Could move the game selector, will retry in " + retryTimeout + "ms");
-   //       }
-   //    }
-   // }
 
    for (const [key, value] of removableMap.entries()) {
       try {
