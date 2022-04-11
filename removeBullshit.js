@@ -1,34 +1,33 @@
-function runRemoveBullshit() {
-   "use strict";
-   var retryTimeout = 500;
-   var retryCount = 0;
-   var maxRetries = 40;
-   var removableClasses = [
-      ".turbo",
-      ".cast",
-      ".download-button",
-      ".chat-wrapper",
-      ".top-nav",
-      ".prediction-wrapper",
-      ".router-links",
-      ".router-wrapper",
-   ];
-   var removableMap = new Map();
-   var popupClosed = false;
-   var paddingRemoved = false;
-   var headerHidden = false;
-   var gameSelectorMoved = false;
+"use strict";
+var retryTimeout = 500;
+var retryCount = 0;
+var maxRetries = 40;
+var removableClasses = [
+   ".turbo",
+   ".cast",
+   ".download-button",
+   ".chat-wrapper",
+   ".top-nav",
+   ".prediction-wrapper",
+   ".router-links",
+   ".router-wrapper",
+];
+var removableMap = new Map();
+var popupClosed = false;
+var paddingRemoved = false;
+var headerHidden = false;
+var gameSelectorMoved = false;
 
-   for (const c of removableClasses) {
-      removableMap.set(c, c);
-   }
-
-   document.onload = setTimeout(() => {
-      console.debug("Removing bullshit");
-      removeBullshit();
-      console.debug("Bullshit removed");
-   }, retryTimeout);
+for (const c of removableClasses) {
+   removableMap.set(c, c);
 }
+
+document.onload = setTimeout(() => {
+   console.debug("Removing bullshit");
+   removeBullshit();
+   console.debug("Bullshit removed");
+}, retryTimeout);
+
 function removeBullshit() {
    var retry = false;
 
