@@ -28,13 +28,23 @@ class PageAction {
    }
 }
 
-class RemovablePageAction extends PageAction {
-   constructor(classToRemove) {
-      super(classToRemove);
+class RemovablePageActions extends PageAction {
+   constructor(classesToRemove) {
+      super(classesToRemove);
    }
 
    doAction() {
-      document.querySelector(this.getName()).remove();
+      if (Array.isArray(this.getName()) === true) {
+         for (let item of this.getName()) {
+            this.remove(item);
+         }
+      } else {
+         this.remove(this.getName());
+      }
+   }
+
+   remove(selectorToRemove) {
+      document.querySelector(selectorToRemove).remove();
    }
 }
 
@@ -72,7 +82,7 @@ class AdjustHeaderPageAction extends PageAction {
    }
 }
 
-class RemoveRouterWrapperAndFooterPageAction extends RemovablePageAction {
+class RemoveRouterWrapperAndFooterPageAction extends RemovablePageActions {
    constructor() {
       super(".router-wrapper");
    }
@@ -88,17 +98,21 @@ var retryTimeout = 500;
 var retryCount = 0;
 var maxRetries = 40;
 
+var removableClasses = [
+   ".turbo",
+   ".cast",
+   ".download-button",
+   ".chat-wrapper",
+   ".top-nav",
+   ".prediction-wrapper",
+   ".router-links",
+];
+
 let actions = [
    new PopupClosePageAction(),
    new RemoveScorePaddingPageAction(),
    new AdjustHeaderPageAction(),
-   new RemovablePageAction(".turbo"),
-   new RemovablePageAction(".cast"),
-   new RemovablePageAction(".download-button"),
-   new RemovablePageAction(".chat-wrapper"),
-   new RemovablePageAction(".top-nav"),
-   new RemovablePageAction(".prediction-wrapper"),
-   new RemovablePageAction(".router-links"),
+   new RemovablePageActions(removableClasses),
    new RemoveRouterWrapperAndFooterPageAction(),
 ];
 
