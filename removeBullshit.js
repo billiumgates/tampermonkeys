@@ -1,5 +1,5 @@
-"use strict";
-"text/javascript";
+//"use strict";
+//"text/javascript";
 var retryTimeout = 500;
 var retryCount = 0;
 var maxRetries = 40;
