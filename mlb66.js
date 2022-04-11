@@ -17,4 +17,5 @@
 
 (function () {
    //Function is loaded from the require annotation
+   console.trace("Version 0.4.8");
 })();
