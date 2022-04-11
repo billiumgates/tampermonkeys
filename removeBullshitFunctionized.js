@@ -64,10 +64,6 @@ let overlayAction = new PageAction(".overlay-wrapper", popupFunction);
 let scoresAction = new PageAction(".show_live_scores", scoresFunction);
 let wrapperAction = new PageAction(".stream-wrapper", headerFunction);
 let actions = [overlayAction, scoresAction, wrapperAction];
-// var popupClosed = false;
-// var paddingRemoved = false;
-// var headerHidden = false;
-// var gameSelectorMoved = false;
 
 document.onload = setTimeout(() => {
    console.debug("Removing bullshit");
