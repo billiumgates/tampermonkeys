@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MLB66Fix
 // @namespace    https://mlb66.ir
-// @version      0.4.9
+// @version      0.5.0
 // @description  Remove stupid shit
 // @author       billiumgates
 // @match        https://mlb66.ir
