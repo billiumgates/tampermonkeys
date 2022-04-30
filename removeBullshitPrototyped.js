@@ -104,15 +104,7 @@ var retryTimeout = 500;
 var retryCount = 0;
 var maxRetries = 40;
 
-var removableClasses = [
-   ".turbo",
-   ".cast",
-   ".download-button",
-   ".chat-wrapper",
-   ".top-nav",
-   ".prediction-wrapper",
-   ".router-links",
-];
+var removableClasses = [".turbo", ".cast", ".chat-wrapper", ".top-nav", ".prediction-wrapper", ".router-links"];
 
 let actions = [
    new PopupClosePageAction(),
