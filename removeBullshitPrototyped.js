@@ -44,7 +44,13 @@ class RemovablePageActions extends PageAction {
    }
 
    remove(selectorToRemove) {
-      document.querySelector(selectorToRemove).remove();
+      if (document.querySelector(selectorToRemove)) {
+         document.querySelector(selectorToRemove).remove();
+      } else {
+         console.debug(
+            `The element identified by the selector ${selectorToRemove} is no longer accessible and shoudl be removed.`,
+         );
+      }
    }
 }
 
