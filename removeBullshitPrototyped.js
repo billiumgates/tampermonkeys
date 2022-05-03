@@ -48,7 +48,7 @@ class RemovablePageActions extends PageAction {
          document.querySelector(selectorToRemove).remove();
       } else {
          console.debug(
-            `The element identified by the selector ${selectorToRemove} is no longer accessible and shoudl be removed.`,
+            `The element identified by the selector ${selectorToRemove} is no longer accessible and should be removed.`,
          );
       }
    }
@@ -104,13 +104,15 @@ var retryTimeout = 500;
 var retryCount = 0;
 var maxRetries = 40;
 
-var removableClasses = [".turbo", ".cast", ".chat-wrapper", ".top-nav", ".prediction-wrapper", ".router-links"];
+var removableClassesOnLoad = [".cast", ".chat-wrapper", ".top-nav", ".router-links"];
 
 let actions = [
    new PopupClosePageAction(),
    new RemoveScorePaddingPageAction(),
    new AdjustHeaderPageAction(),
-   new RemovablePageActions(removableClasses),
+   new RemovablePageActions(removableClassesOnLoad),
+   new RemovablePageActions(".turbo"),
+   new RemovablePageActions(".shadow-wrapper"),
    new RemoveRouterWrapperAndFooterPageAction(),
 ];
 
