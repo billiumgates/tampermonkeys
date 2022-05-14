@@ -44,13 +44,7 @@ class RemovablePageActions extends PageAction {
    }
 
    remove(selectorToRemove) {
-      if (document.querySelector(selectorToRemove)) {
-         document.querySelector(selectorToRemove).remove();
-      } else {
-         console.debug(
-            `The element identified by the selector ${selectorToRemove} is no longer accessible and should be removed.`,
-         );
-      }
+      document.querySelector(selectorToRemove).remove();
    }
 }
 
@@ -60,14 +54,7 @@ class PopupClosePageAction extends PageAction {
    }
 
    doAction() {
-      if (
-         document.querySelector(".overlay-wrapper") &&
-         document.querySelector(".overlay-wrapper").querySelector("button")
-      ) {
-         document.querySelector(".overlay-wrapper").querySelector("button").click();
-      } else {
-         console.debug(`The element identified by the selector .overlay-wrapper is not accessible at this moment.`);
-      }
+      document.querySelector(".overlay-wrapper").querySelector("button").click();
    }
 }
 
@@ -109,17 +96,23 @@ class RemoveRouterWrapperAndFooterPageAction extends RemovablePageActions {
 
 var retryTimeout = 500;
 var retryCount = 0;
-var maxRetries = 40;
+var maxRetries = 5;
 
-var removableClassesOnLoad = [".cast", ".chat-wrapper", ".top-nav", ".router-links"];
+var removableClasses = [
+   ".turbo",
+   ".cast",
+   ".download-button",
+   ".chat-wrapper",
+   ".top-nav",
+   ".prediction-wrapper",
+   ".router-links",
+];
 
 let actions = [
    new PopupClosePageAction(),
    new RemoveScorePaddingPageAction(),
    new AdjustHeaderPageAction(),
-   new RemovablePageActions(removableClassesOnLoad),
-   new RemovablePageActions(".turbo"),
-   new RemovablePageActions(".shadow-wrapper"),
+   new RemovablePageActions(removableClasses),
    new RemoveRouterWrapperAndFooterPageAction(),
 ];
 
@@ -129,27 +122,29 @@ document.onload = setTimeout(() => {
    console.debug("Bullshit removed");
 }, retryTimeout);
 
+//From here: https://stackoverflow.com/questions/38213668/promise-retry-design-patterns
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const retryOperation = (operation, delay, retries) =>
+   new Promise((resolve, reject) => {
+      return operation()
+         .then(resolve)
+         .catch((reason) => {
+            if (retries > 0) {
+               return wait(delay)
+                  .then(retryOperation.bind(null, operation, delay, retries - 1))
+                  .then(resolve)
+                  .catch(reject);
+            }
+            return reject(reason);
+         });
+   });
+
 function removeBullshit() {
    var retry = false;
 
    for (let action of actions) {
-      if (action.isComplete() === false) {
-         try {
-            action.doAction();
-            action.setIsComplete(true);
-         } catch (error) {
-            retry = true;
-            if (retryCount > maxRetries) {
-               console.error("Could not perform the action " + action.getName() + ":" + error);
-               retry = false;
-            } else {
-               console.debug(
-                  "Could not perform the action " + action.getName() + ", will retry in " + retryTimeout + "ms",
-               );
-               console.trace(error);
-            }
-         }
-      }
+      retryOperation(action.doAction, retryTimeout, maxRetries).then(console.log).catch(console.log);
    }
 
    if (retry === true) {
