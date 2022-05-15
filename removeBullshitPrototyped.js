@@ -47,9 +47,9 @@ class RemovablePageActions extends PageAction {
       if (document.querySelector(selectorToRemove)) {
          document.querySelector(selectorToRemove).remove();
       } else {
-         console.debug(
-            `The element identified by the selector ${selectorToRemove} is no longer accessible and should be removed.`,
-         );
+         var error = `The element identified by the selector ${selectorToRemove} is no longer accessible and should be removed.`;
+         console.debug(error);
+         throw error;
       }
    }
 }
@@ -66,7 +66,9 @@ class PopupClosePageAction extends PageAction {
       ) {
          document.querySelector(".overlay-wrapper").querySelector("button").click();
       } else {
-         console.debug(`The element identified by the selector .overlay-wrapper is not accessible at this moment.`);
+         var error = `The element identified by the selector .overlay-wrapper is not accessible at this moment.`;
+         console.debug(error);
+         throw error;
       }
    }
 }
